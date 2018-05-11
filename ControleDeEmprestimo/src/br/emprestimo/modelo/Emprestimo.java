@@ -56,6 +56,22 @@ public class Emprestimo {
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/YYYY");
 		return new DateTime().toString(fmt);
 	}
+	public boolean verificaDiaDaSemana(String data) {
+		
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/YYYY");
+	    boolean isValida = false;
+	    
+	    if (validaData(data)) {
+	    	
+	    	DateTime umaData = fmt.parseDateTime(data);
+	    	
+	    	if (umaData.dayOfWeek().getAsText() == "Domingo") {
+	    		
+	    		return true;
+	    	}
+	    }		
+		return false;
+	}
 
 	/**
 	 * valida o formato da data e se o dia do mes eh valido

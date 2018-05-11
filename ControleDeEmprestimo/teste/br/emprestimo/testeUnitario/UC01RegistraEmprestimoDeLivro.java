@@ -90,6 +90,15 @@ public class UC01RegistraEmprestimoDeLivro {
 		String dataEmprestimo = emprestimo.setDataEmprestimo();
 		assertTrue(dataAtual.equals(dataEmprestimo));
 	}
-	
+	@Test
+	public void CT09UC01QuandoADataDevolucaoForDomingo() {
+		
+		String data = "06/05/2018";
+		Emprestimo umEmprestimo = new Emprestimo();
+		
+		boolean ehDomingo = umEmprestimo.verificaDiaDaSemana(data);
+		
+		assertTrue(ehDomingo);
+	}
 	
 }
