@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.emprestimo.modelo.Emprestimo;
+import br.emprestimo.modelo.EmprestimoDAO;
 import br.emprestimo.modelo.Livro;
 import br.emprestimo.modelo.Usuario;
 import br.emprestimo.servico.ServicoEmprestimo;
@@ -15,6 +16,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 public class UC01RegistraEmprestimoDeLivro {
+	
 	static private Livro livro;
 	static private Usuario usuario;
 	static private ServicoEmprestimo servico;
@@ -99,6 +101,50 @@ public class UC01RegistraEmprestimoDeLivro {
 		boolean ehDomingo = umEmprestimo.verificaDiaDaSemana(data);
 		
 		assertTrue(ehDomingo);
+	}
+	@Test
+	public void CT10UC01quandoInserirUmRegistroRetornaUm() {
+		//cenario
+		Emprestimo umEmprestimo = new Emprestimo();
+		Usuario umUsuario = ObtemUsuario.comDadosValidos();
+		Livro umLivro = ObtemLivro.comDadosValidos();
+		ServicoEmprestimo servico = new ServicoEmprestimo();
+		EmprestimoDAO emprestimoDAO = new EmprestimoDAO();	
+		umEmprestimo = servico.empresta(umLivro, umUsuario);
+		;
+		//acao
+		boolean resultadoEsperado = emprestimoDAO.adicionar(umEmprestimo);
+		
+		assertTrue(resultadoEsperado);
+	}
+	@Test
+	public void CT11UC01ConsultaRegistroComSucesso() {
+		//cenario
+		Emprestimo umEmprestimo = new Emprestimo();
+		Usuario umUsuario = ObtemUsuario.comDadosValidos();
+		Livro umLivro = ObtemLivro.comDadosValidos();
+		ServicoEmprestimo servico = new ServicoEmprestimo();
+		EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+		emprestimoDAO.adicionar(umEmprestimo);
+		// insere 1
+		umUsuario = ObtemUsuario.listaComDadosValidos().get(0);
+		umEmprestimo = servico.empresta(umLivro, umUsuario);
+		emprestimoDAO = new EmprestimoDAO();
+		emprestimoDAO.adicionar(umEmprestimo);
+		// insere 2
+		umUsuario = ObtemUsuario.listaComDadosValidos().get(1);
+		umEmprestimo = servico.empresta(umLivro, umUsuario);
+		emprestimoDAO = new EmprestimoDAO();
+		emprestimoDAO.adicionar(umEmprestimo);
+		// insere 3
+	    umUsuario = ObtemUsuario.listaComDadosValidos().get(2);
+		umEmprestimo = servico.empresta(umLivro, umUsuario);
+		emprestimoDAO = new EmprestimoDAO();
+		emprestimoDAO.adicionar(umEmprestimo);
+		
+		//acao
+		Emprestimo resultadoObtido = emprestimoDAO.consulta(umEmprestimo);
+		assertTrue(resultadoObtido.equals(umEmprestimo));
 	}
 	
 }
